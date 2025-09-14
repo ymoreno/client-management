@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +36,11 @@ public class Cliente {
     private DocumentType documentType;
 
     private long numberId;
+    @Size(min = 2, message = "El nombre debe tener al menos 2 caracteres")
     private String names;
+    @Size(min = 2, message = "El nombre debe tener al menos 2 caracteres")
     private String surname;
+    @Email(message = "Correo inválido, debe ser del formato xxxx@xxxxx.xxx")
     private String email;
     private LocalDate birthDate;
 
@@ -46,10 +51,8 @@ public class Cliente {
     private LocalDateTime modificationDate;
 
     public enum DocumentType {
-        CC, // Cédula de Ciudadanía
-        CE, // Cédula de Extranjería
-        TI, // Tarjeta de Identidad
-        NIT, // Número de Identificación Tributaria
-        PASSPORT // Pasaporte
+        CC,
+        CE,
+        NIT
     }
 }
