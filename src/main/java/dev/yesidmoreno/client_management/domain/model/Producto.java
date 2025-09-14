@@ -49,16 +49,16 @@ public class Producto {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente owner;
 
-    public enum AccountStatus {
-        ACTIVE,
-        INACTIVE,
-        CANCELLED
-    }
-
     @AssertTrue(message = "El número de cuenta no cumple con el prefijo del tipo seleccionado")
     public boolean isPrefijoValido() {
         if (accountNumber == null || accountType == null) return true;
         return accountNumber.startsWith(accountType.getPrefix());
+    }
+
+    public enum AccountStatus {
+        ACTIVE,
+        INACTIVE,
+        CANCELLED
     }
 
 }

@@ -42,4 +42,9 @@ public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
     public Optional<Producto> getProductoById(UUID id) {
         return productoJpaRepository.findById(id);
     }
+
+    @Override
+    public Optional<Producto> findByAccountNumber(String accountNumber) {
+        return productoJpaRepository.findByAccountNumber(accountNumber);
+    }
 }

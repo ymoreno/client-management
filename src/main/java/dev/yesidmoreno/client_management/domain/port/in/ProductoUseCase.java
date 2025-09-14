@@ -6,8 +6,14 @@ import java.util.UUID;
 
 public interface ProductoUseCase {
     Producto createCheckingAccount(Producto producto);
+
     Producto createSavingsAccount(Producto producto);
+
     Producto activateAccount(UUID id);
+
     Producto deactivateAccount(UUID id);
+
     Producto cancelAccount(UUID id);
+
+    Producto getProductoByAccountNumber(String accountNumber);
 }

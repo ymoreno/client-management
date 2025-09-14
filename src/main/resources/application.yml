@@ -1,3 +1,16 @@
 spring:
   application:
     name: client_management
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # (validate / update / create / create-drop según necesidad)
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

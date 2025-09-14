@@ -7,6 +7,7 @@ import dev.yesidmoreno.client_management.domain.model.Cliente;
 import dev.yesidmoreno.client_management.domain.model.Producto;
 import dev.yesidmoreno.client_management.domain.port.in.ClienteUseCase;
 import dev.yesidmoreno.client_management.domain.port.out.ClienteRepositoryPort;
+import dev.yesidmoreno.client_management.domain.port.out.LogPort;
 import dev.yesidmoreno.client_management.domain.port.out.ProductoRepositoryPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,46 +19,67 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ClienteService implements ClienteUseCase {
 
-    ClienteRepositoryPort clienteRepositoryPort;
-    ProductoRepositoryPort productoRepositoryPort;
+    private final ClienteRepositoryPort clienteRepositoryPort;
+    private final ProductoRepositoryPort productoRepositoryPort;
+    private final LogPort logPort;
 
     @Override
     public Cliente createCliente(Cliente cliente) {
-        if (!GeneralUtil.isAdult(cliente.getBirthDate())){
+        logPort.info("Creando cliente: " + cliente.getNames());
+        if (!GeneralUtil.isAdult(cliente.getBirthDate())) {
+            logPort.error("Error al crear cliente: El cliente debe ser mayor de edad");
             throw new ValidationException("El cliente debe ser mayor de edad");
         }
         cliente.setCreationDate(LocalDateTime.now());
         cliente.setModificationDate(LocalDateTime.now());
-        return clienteRepositoryPort.save(cliente);
+        Cliente createdCliente = clienteRepositoryPort.save(cliente);
+        logPort.info("Cliente creado exitosamente: " + createdCliente.getId());
+        return createdCliente;
     }
 
     @Override
     public Cliente updateCliente(UUID id, Cliente cliente) {
+        logPort.info("Actualizando cliente: " + id);
         Cliente existente = clienteRepositoryPort.findById(id)
-                .orElseThrow(() -> new NotFoundException("No se encuentra el cliente a modificar"));
+                .orElseThrow(() -> {
+                    logPort.error("Error al actualizar cliente: No se encuentra el cliente a modificar con id: " + id);
+                    return new NotFoundException("No se encuentra el cliente a modificar");
+                });
 
         existente.setNames(cliente.getNames());
         existente.setSurname(cliente.getSurname());
         existente.setEmail(cliente.getEmail());
         existente.setModificationDate(LocalDateTime.now());
 
-        return clienteRepositoryPort.save(existente);
+        Cliente updatedCliente = clienteRepositoryPort.save(existente);
+        logPort.info("Cliente actualizado exitosamente: " + updatedCliente.getId());
+        return updatedCliente;
     }
 
 
     @Override
     public void deleteCliente(UUID id) {
+        logPort.info("Eliminando cliente: " + id);
         Cliente existente = clienteRepositoryPort.findById(id)
-                .orElseThrow(() -> new NotFoundException("No se encuentra el cliente a eliminar"));
-        if (productoRepositoryPort.existsByClienteIdAndEstado(existente.getId(), String.valueOf(Producto.AccountStatus.ACTIVE))){
+                .orElseThrow(() -> {
+                    logPort.error("Error al eliminar cliente: No se encuentra el cliente a eliminar con id: " + id);
+                    return new NotFoundException("No se encuentra el cliente a eliminar");
+                });
+        if (productoRepositoryPort.existsByClienteIdAndEstado(existente.getId(), String.valueOf(Producto.AccountStatus.ACTIVE))) {
+            logPort.error("Error al eliminar cliente: No se puede eliminar un cliente con productos activos");
             throw new ValidationException("No se puede eliminar un cliente con productos activos");
         }
         clienteRepositoryPort.deleteById(id);
+        logPort.info("Cliente eliminado exitosamente: " + id);
     }
 
     @Override
     public Cliente getCliente(UUID id) {
+        logPort.info("Buscando cliente: " + id);
         return clienteRepositoryPort.findById(id)
-                .orElseThrow(() -> new NotFoundException("No se encuentra el cliente con el id proporcionado"));
+                .orElseThrow(() -> {
+                    logPort.error("Error al buscar cliente: No se encuentra el cliente con el id proporcionado: " + id);
+                    return new NotFoundException("No se encuentra el cliente con el id proporcionado");
+                });
     }
 }
