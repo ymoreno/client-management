@@ -1,5 +1,8 @@
 package dev.yesidmoreno.client_management.domain.model;
 
+import lombok.Getter;
+
+@Getter
 public enum AccountType {
     CC("CC", "33", "Cuenta Corriente"),
     CA("CA", "53", "Cuenta de Ahorros");
@@ -12,17 +15,5 @@ public enum AccountType {
         this.code = code;
         this.prefix = prefix;
         this.displayName = displayName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 }

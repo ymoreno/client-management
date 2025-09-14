@@ -28,6 +28,7 @@ public class Producto {
     @NotNull
     private AccountType accountType;
 
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
     @Size(min = 10, max = 10, message = "El número de cuenta debe tener exactamente 10 dígitos")
@@ -51,7 +52,7 @@ public class Producto {
     public enum AccountStatus {
         ACTIVE,
         INACTIVE,
-        CANCELED
+        CANCELLED
     }
 
     @AssertTrue(message = "El número de cuenta no cumple con el prefijo del tipo seleccionado")

@@ -42,6 +42,6 @@ public class Transaccion{
     public enum TransactionType {
         DEPOSIT,
         WITHDRAWAL,
-        TRANSFERENCE
+        TRANSFER
     }
 }
