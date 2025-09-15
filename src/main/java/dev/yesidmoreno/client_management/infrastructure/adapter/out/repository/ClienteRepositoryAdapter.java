@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ClienteRepositoryAdapter implements ClienteRepositoryPort {
 
-    ClienteJpaRepository clienteJpaRepository;
+    private final ClienteJpaRepository clienteJpaRepository;
 
     @Override
     public Cliente save(Cliente cliente) {

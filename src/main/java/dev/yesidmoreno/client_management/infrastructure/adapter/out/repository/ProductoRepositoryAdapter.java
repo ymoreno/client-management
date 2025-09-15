@@ -12,7 +12,11 @@ import java.util.UUID;
 @Component
 public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
 
-    ProductoJpaRepository productoJpaRepository;
+    private final ProductoJpaRepository productoJpaRepository;
+
+    public ProductoRepositoryAdapter(ProductoJpaRepository productoJpaRepository) {
+        this.productoJpaRepository = productoJpaRepository;
+    }
 
     @Override
     public Producto save(Producto producto) {
@@ -34,12 +38,17 @@ public class ProductoRepositoryAdapter implements ProductoRepositoryPort {
     }
 
     @Override
-    public boolean existsByClienteIdAndEstado(UUID clienteId, String status) {
-        return productoJpaRepository.existsByClienteIdAndStatus(clienteId, status);
+    public boolean existsByOwnerIdAndAccountStatus(UUID ownerId, Producto.AccountStatus status) {
+        return productoJpaRepository.existsByOwner_IdAndAccountStatus(ownerId, status);
     }
 
     @Override
     public Optional<Producto> getProductoById(UUID id) {
         return productoJpaRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Producto> findByAccountNumber(String accountNumber) {
+        return productoJpaRepository.findByAccountNumber(accountNumber);
     }
 }

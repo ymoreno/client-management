@@ -5,7 +5,7 @@ import java.time.Period;
 
 public final class GeneralUtil {
 
-    private GeneralUtil(){
+    private GeneralUtil() {
 
     }
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class TransaccionRepositoryAdapter implements TransaccionRepositoryPort {
 
-    TransaccionJpaRepository transaccionJpaRepository;
+    private final TransaccionJpaRepository transaccionJpaRepository;
 
     @Override
     public Transaccion save(Transaccion transaccion) {
