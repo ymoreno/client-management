@@ -11,7 +11,7 @@ public interface ProductoRepositoryPort {
 
     Producto changeStatus(UUID id, String status);
 
-    boolean existsByClienteIdAndEstado(UUID clienteId, String status);
+    boolean existsByOwnerIdAndAccountStatus(UUID ownerId, Producto.AccountStatus status);
 
     Optional<Producto> getProductoById(UUID id);
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ProductoJpaRepository extends JpaRepository<Producto, UUID> {
 
-    boolean existsByClienteIdAndStatus(UUID clienteId, String status);
+    boolean existsByOwner_IdAndAccountStatus(UUID ownerId, Producto.AccountStatus accountStatus);
 
     Optional<Producto> findByAccountNumber(String accountNumber);
 

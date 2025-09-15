@@ -65,7 +65,7 @@ public class ClienteService implements ClienteUseCase {
                     logPort.error("Error al eliminar cliente: No se encuentra el cliente a eliminar con id: " + id);
                     return new NotFoundException("No se encuentra el cliente a eliminar");
                 });
-        if (productoRepositoryPort.existsByClienteIdAndEstado(existente.getId(), String.valueOf(Producto.AccountStatus.ACTIVE))) {
+        if (productoRepositoryPort.existsByOwnerIdAndAccountStatus(existente.getId(), Producto.AccountStatus.ACTIVE)) {
             logPort.error("Error al eliminar cliente: No se puede eliminar un cliente con productos activos");
             throw new ValidationException("No se puede eliminar un cliente con productos activos");
         }

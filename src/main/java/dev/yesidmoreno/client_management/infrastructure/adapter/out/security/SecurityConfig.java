@@ -3,6 +3,7 @@ package dev.yesidmoreno.client_management.infrastructure.adapter.out.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +11,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -17,10 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // desactiva CSRF en APIs REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/client/**").hasRole("ADMIN")
-                        .requestMatchers("/product/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/transaction/**").authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()); // autenticación básica (Authorization: Basic)
         return http.build();

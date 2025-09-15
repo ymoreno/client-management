@@ -81,7 +81,7 @@ public class ProductoService implements ProductoUseCase {
         if (productToBeCanceled.isEmpty()) {
             logPort.error("Error al cancelar cuenta: Cuenta no encontrada con id: " + id);
             throw new ValidationException("Cuenta no encontrada");
-        } else if (productToBeCanceled.get().getBalance() <= 0) {
+        } else if (productToBeCanceled.get().getBalance() != 0) {
             logPort.error("Error al cancelar cuenta: Para cancelar una cuenta su saldo debe ser $0.");
             throw new ValidationException("Para cancelar una cuenta su saldo debe ser $0.");
         }
